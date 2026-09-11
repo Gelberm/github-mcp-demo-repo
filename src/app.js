@@ -10,7 +10,13 @@ const STORAGE_KEY = "tasks";
 
 function loadTasks() {
   const saved = localStorage.getItem(STORAGE_KEY);
-  return saved ? JSON.parse(saved) : [...initialTasks];
+  if (!saved) return [...initialTasks];
+  try {
+    return JSON.parse(saved);
+  } catch (err) {
+    console.warn("Failed to parse saved tasks, falling back to initial tasks.", err);
+    return [...initialTasks];
+  }
 }
 
 function saveTasks() {
